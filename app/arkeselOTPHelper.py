@@ -5,7 +5,7 @@ import json
 
 
 
-def generateOTP(phone_number: str):
+def generateOTP(sender:str, phone_number: str):
 
     message: str = 'This is a test OTP from Arkesel API {}otp_code{}'.format('%','%')
 
@@ -35,10 +35,10 @@ def generateOTP(phone_number: str):
     return generateResponse.json()
 
 
-def verifyOTP(code:str, phone_number: str):
+def verifyOTP(sender: str, code:str, phone_number: str):
 
         data = {
-            "api_key": settings.API_KEY,
+            "api_key": sender,
             "code": code,
             "number": phone_number
         }
@@ -57,9 +57,9 @@ def verifyOTP(code:str, phone_number: str):
         print('generate response', verifyResponse)
         return verifyResponse.json()
 
-def sendSMS( message: str, phone_numbers):
+def sendSMS(sender: str, message: str, phone_numbers):
         data = {
-        'sender': settings.SENDER_ID,
+        'sender':sender,
         'message': message,
         'recipients': phone_numbers
         }

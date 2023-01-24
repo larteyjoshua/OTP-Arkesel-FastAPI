@@ -11,7 +11,6 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     EXPIRY_TIME: int =  os.environ.get("EXPIRY_TIME")
     OTP_LENGTH: int = os.environ.get("OTP_LENGTH")
-    SENDER_ID: str = os.environ.get("SENDER_ID")
     TYPE: str = os.environ.get("TYPE")
     OTP_GENERATE_URL: str = os.environ.get("OTP_GENERATE_URL")
     OTP_VERIFY_URL: str = os.environ.get("OTP_VERIFY_URL")
