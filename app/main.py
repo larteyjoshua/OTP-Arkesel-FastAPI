@@ -1,10 +1,18 @@
 from fastapi import FastAPI, HTTPException,Query
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from app.arkeselOTPHelper import generateOTP, verifyOTP, sendSMS
 from app.schema import Response, SendSMS
 
 app = FastAPI(
     title = "OTP with Arkesel API"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.get("/")
