@@ -15,7 +15,7 @@ def generateOTP(sender:str, phone_number: str):
          medium = settings.MEDIUM,
          message = message,
          number = phone_number,
-         sender_id = settings.SENDER_ID,
+         sender_id =sender,
          type = settings.TYPE 
     )
 
@@ -31,7 +31,7 @@ def generateOTP(sender:str, phone_number: str):
     data =params,
     headers = headers)
 
-    print('generate response', generateResponse)
+    # print('generate response', generateResponse)
     return generateResponse.json()
 
 
@@ -54,7 +54,7 @@ def verifyOTP(sender: str, code:str, phone_number: str):
             data = params,
             headers = headers)
 
-        print('generate response', verifyResponse)
+        # print('generate response', verifyResponse)
         return verifyResponse.json()
 
 def sendSMS(sender: str, message: str, phone_numbers):
@@ -75,6 +75,6 @@ def sendSMS(sender: str, message: str, phone_numbers):
             data = params,
             headers = headers)
 
-        print('send response', messageResponse)
+        # print('send response', messageResponse)
         return messageResponse.json()
    

@@ -28,9 +28,34 @@ class SMSResponse(BaseModel):
         orm_mode = True
 
 class SendSMS(BaseModel):
+   sender: str
+   message: str
+   phone_numbers: List[str]
+   class Config():
+        orm_mode = True
+
+class RespondSMS(BaseModel):
     status: str
     data: List[SMSResponse]
 
     class Config():
         orm_mode = True
+
+
+class RequestOTP(BaseModel):
+    sender: str
+    phone_number: str
+
+    class Config():
+        orm_mode = True
+
+class VerifyOTP(BaseModel):
+    sender: str
+    phone_number: str
+    code: str
+
+    class Config():
+        orm_mode = True
+
+
 

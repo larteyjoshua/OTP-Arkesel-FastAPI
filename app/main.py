@@ -1,8 +1,8 @@
-from fastapi import FastAPI, HTTPException,Query
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from app.arkeselOTPHelper import generateOTP, verifyOTP, sendSMS
-from app.schema import Response, SendSMS
+from app.schema import Response, SendSMS, RespondSMS, RequestOTP, VerifyOTP
 
 app = FastAPI(
     title = "OTP with Arkesel API"
@@ -20,28 +20,28 @@ async def hello_world():
     return {"message": "Hello World"}
 
 
-@app.post("/v1/otp/generate/{phone_number}", response_model= Response)
-async def generate_OTP(sender: str,phone_number):
-    if len(phone_number) < 12:
+@app.post("/v1/otp/generate", response_model= Response)
+async def generate_OTP(request: RequestOTP):
+    if len(request.phone_number) < 12:
        raise HTTPException(status_code=418, detail="Phone Number less than 12 eg. 233249643365")
     else:
-        return generateOTP(sender, phone_number)
+        return generateOTP(request.sender, request.phone_number)
 
 
-@app.post("/v1/otp/verify/{phone_number}", response_model= Response)
-async def verify_OTP(sender: str, code: str, phone_number):
-    if len(code) < 6:
+@app.post("/v1/otp/verify", response_model= Response)
+async def verify_OTP(request: VerifyOTP):
+    if len(request.code) < 6:
         raise HTTPException(status_code=418, detail="code must be 6 numeric figure")
-    elif len(phone_number) < 12:
+    elif len(request.phone_number) < 12:
          raise HTTPException(status_code=418, detail="Phone Number less than 12 eg. 233249643365")
     else:
-        return verifyOTP(sender, code,phone_number)
+        return verifyOTP(request.sender, request.code,request.phone_number)
 
-@app.post("/v1/message/send", response_model = SendSMS)
-async def send_SMS(sender: str, message: str, phone_numbers: List[str] = Query(...)):
-    if len(phone_numbers) < 0:
+@app.post("/v1/message/send", response_model = RespondSMS)
+async def send_SMS(request:SendSMS):
+    if len(request.phone_numbers) < 0:
         raise HTTPException(status_code=418, detail="Enter at least a Phone Number")
-    elif len(message) < 0:
+    elif len(request.message) < 0:
          raise HTTPException(status_code=418, detail="Message cannot be empty")
     else:
-        return sendSMS(sender, message,phone_numbers)
+        return sendSMS(request.sender, request.message, request.phone_numbers)
